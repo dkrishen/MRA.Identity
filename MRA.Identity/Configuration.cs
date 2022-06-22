@@ -10,23 +10,29 @@ namespace MRA.Identity
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
             {
-                new ApiScope("MRA.API", "MRA API")
+                new ApiScope("my_scope"),
+                new ApiScope("ApiScope", "Api Scope")
             };
 
         public static IEnumerable<IdentityResource> IdentityResources =>
             new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
+                new IdentityResources.Profile(),
+                new IdentityResources.Email(),
             };
 
         public static IEnumerable<ApiResource> ApiResources =>
             new List<ApiResource>
             {
-                new ApiResource("MRA.API", "MRA API", new[] { JwtClaimTypes.Name })
-                {
-                    Scopes = {"MRA.API"}
-                }
+                //new ApiResource("MRAApi", "MRA.API", 
+                //    new [] { JwtClaimTypes.Name })
+                //{
+                //    Scopes =
+                //    {
+                //        "backendApi"
+                //    }
+                //}
             };
 
         public static IEnumerable<Client> clients =>
@@ -34,29 +40,51 @@ namespace MRA.Identity
             {
                 new Client
                 {
-                    ClientId = "MRA-API",
-                    ClientName = "MRA API",
+                    ClientId = "oidcMVCApp",
+                    ClientName = "MRA.Mvc",
+                    ClientSecrets = new List<Secret> {new Secret("MvcSecret".Sha256())},
+
                     AllowedGrantTypes = GrantTypes.Code,
-                    RequireClientSecret = false,
-                    RedirectUris =
-                    {
-                        "http://.../signin-oidc"    //TODO redirect after authentificate client
-                    },
-                    AllowedCorsOrigins =
-                    {
-                        "http://..." //TODO
-                    },
-                    PostLogoutRedirectUris =
-                    {
-                        "http://.../signout-oidc"   //TODO redirect after logout client
-                    },
-                    AllowedScopes =
+                    RedirectUris = new List<string> {"https://localhost:44393/signin-oidc"},
+                    AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "MRA.API"
+                        IdentityServerConstants.StandardScopes.Email,
+                        "my_scope"
                     },
-                    AllowAccessTokensViaBrowser = true
+                    RequirePkce = true,
+                    AllowPlainTextPkce = false
+                },
+                new Client
+                {
+                    ClientId = "MRAAngular",
+                    ClientName = "MRA.Angular",
+                    ClientSecrets = new List<Secret> {new Secret("AngularSecret".Sha256())},
+                    //RequireClientSecret = false,
+
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RedirectUris = new List<string> {"http://localhost:4200/"},
+                    PostLogoutRedirectUris = new List<string> { "http://localhost:4200/" },
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "my_scope"
+                    },
+                    RequirePkce = true,
+                    AllowPlainTextPkce = false,
+                    AllowedCorsOrigins = {"http://localhost:4200"},
+                },
+                new Client {
+                    ClientId = "MRAApi",
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    ClientSecrets =
+                    {
+                        new Secret("MRAApiSecret".Sha256())
+                    },
+                    AllowedScopes = { "ApiScope"}
                 }
             };
     }

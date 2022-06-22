@@ -27,8 +27,6 @@ namespace MRA.Identity
             AppConfiguration = appConfiguration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = AppConfiguration.GetValue<string>("ConnectionString");
@@ -62,9 +60,18 @@ namespace MRA.Identity
             });
 
             services.AddControllersWithViews();
+
+            services.AddCors(/*options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            }*/);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -79,11 +86,16 @@ namespace MRA.Identity
                 RequestPath = "/styles"
             });
             app.UseRouting();
+            app.UseCors();
             app.UseIdentityServer();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
             });
         }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///
+
     }
 }

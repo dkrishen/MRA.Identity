@@ -1,4 +1,5 @@
 ﻿using IdentityServer4.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace MRA.Identity.Controllers
 {
+    [SecurityHeaders]
+    [AllowAnonymous]
     public class AuthController : Controller
     {
         private readonly SignInManager<AppUser> _signInManager;
@@ -27,7 +30,7 @@ namespace MRA.Identity.Controllers
                 ReturnUrl = returnUrl
             };
 
-            return View(model);
+            return View("Login", model);
         }
 
         [HttpPost]
@@ -59,7 +62,7 @@ namespace MRA.Identity.Controllers
         [HttpGet]
         public IActionResult Register(string returnUrl)
         {
-            var model = new LoginViewModel
+            var model = new RegisterViewModel
             {
                 ReturnUrl = returnUrl
             };
