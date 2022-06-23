@@ -25,14 +25,14 @@ namespace MRA.Identity
         public static IEnumerable<ApiResource> ApiResources =>
             new List<ApiResource>
             {
-                //new ApiResource("MRAApi", "MRA.API", 
-                //    new [] { JwtClaimTypes.Name })
-                //{
-                //    Scopes =
-                //    {
-                //        "backendApi"
-                //    }
-                //}
+                new ApiResource("MRAApi", "MRA.API",
+                    new [] { JwtClaimTypes.Name })
+                {
+                    Scopes =
+                    {
+                        "ApiScope"
+                    }
+                }
             };
 
         public static IEnumerable<Client> clients =>
@@ -71,21 +71,22 @@ namespace MRA.Identity
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
-                        "my_scope"
+                        "my_scope",
+                        "MRAApi"
                     },
                     RequirePkce = true,
                     AllowPlainTextPkce = false,
                     AllowedCorsOrigins = {"http://localhost:4200"},
                 },
-                new Client {
-                    ClientId = "MRAApi",
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets =
-                    {
-                        new Secret("MRAApiSecret".Sha256())
-                    },
-                    AllowedScopes = { "ApiScope"}
-                }
+                //new Client {
+                //    ClientId = "MRAApi",
+                //    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                //    ClientSecrets =
+                //    {
+                //        new Secret("MRAApiSecret".Sha256())
+                //    },
+                //    AllowedScopes = { "ApiScope"}
+                //}
             };
     }
 }
