@@ -61,7 +61,6 @@ namespace MRA.Identity
                     ClientId = "MRAAngular",
                     ClientName = "MRA.Angular",
                     ClientSecrets = new List<Secret> {new Secret("AngularSecret".Sha256())},
-                    //RequireClientSecret = false,
 
                     AllowedGrantTypes = GrantTypes.Code,
                     RedirectUris = new List<string> {"http://localhost:4200/"},
@@ -78,15 +77,6 @@ namespace MRA.Identity
                     AllowPlainTextPkce = false,
                     AllowedCorsOrigins = {"http://localhost:4200"},
                 },
-                //new Client {
-                //    ClientId = "MRAApi",
-                //    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                //    ClientSecrets =
-                //    {
-                //        new Secret("MRAApiSecret".Sha256())
-                //    },
-                //    AllowedScopes = { "ApiScope"}
-                //}
             };
     }
 }

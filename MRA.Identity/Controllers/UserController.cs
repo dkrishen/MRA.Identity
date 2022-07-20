@@ -15,20 +15,15 @@ namespace AuthApi.Controllers
     [ApiController]
     public class UserController : Controller
     {
-        private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
-        private readonly IIdentityServerInteractionService _interactionService;
 
-        //private readonly IUserRepository userRepository;
-        //private readonly IUserLogic userLogic;
         public UserController(SignInManager<AppUser> signInManager,
             UserManager<AppUser> userManager,
             IIdentityServerInteractionService interactionService) =>
-            (_signInManager, _userManager, _interactionService) =
-            (signInManager, userManager, interactionService);
+            (_userManager) =
+            (userManager);
 
         [HttpGet]
-        //[Authorize(Roles = "User")]
         [Route("GetUsersByIds")]
         public async Task<IActionResult> GetRoomsByIdsAsync(string data)
         {
