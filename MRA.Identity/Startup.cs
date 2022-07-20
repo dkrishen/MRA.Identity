@@ -61,7 +61,7 @@ namespace MRA.Identity
 
             services.AddControllersWithViews();
 
-            services.AddCors(/*options =>
+            services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
                 {
@@ -69,11 +69,13 @@ namespace MRA.Identity
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
-            }*/);
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -86,7 +88,6 @@ namespace MRA.Identity
                 RequestPath = "/styles"
             });
             app.UseRouting();
-            app.UseCors();
             app.UseIdentityServer();
             app.UseEndpoints(endpoints =>
             {
