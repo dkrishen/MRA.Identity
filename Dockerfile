@@ -16,6 +16,13 @@ RUN dotnet build "MRA.Identity.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "MRA.Identity.csproj" -c Release -o /app/publish
 
+FROM ubuntu:trusty
+RUN sudo apt-get -y update
+RUN sudo apt-get -y upgrade
+RUN sudo apt-get install -y sqlite3 libsqlite3-dev
+RUN /usr/bin/sqlite3 /MRA.Identity/Platinum.Auth.db
+CMD /bin/bash
+
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
