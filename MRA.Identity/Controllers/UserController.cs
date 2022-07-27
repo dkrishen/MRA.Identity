@@ -25,7 +25,7 @@ namespace AuthApi.Controllers
 
         [HttpGet]
         [Route("GetUsersByIds")]
-        public async Task<IActionResult> GetRoomsByIdsAsync(string data)
+        public async Task<IActionResult> GetUsersByIdsAsync(string data)
         {
             var userIds = JsonConvert.DeserializeObject<IEnumerable<Guid>>(data);
             
@@ -33,8 +33,13 @@ namespace AuthApi.Controllers
             
             foreach(var id in userIds)
             {
-                users.Add(await _userManager.FindByIdAsync(id.ToString()));
+                var user = await _userManager.FindByIdAsync(id.ToString());
+                if(user != null)
+                {
+                    users.Add(user);
+                }
             }
+
 
             return Ok(JsonConvert.SerializeObject(users));
         }
