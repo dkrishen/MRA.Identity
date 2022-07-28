@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MRA.Identity.Filters;
 using MRA.Identity.Models;
 using System.Threading.Tasks;
 
