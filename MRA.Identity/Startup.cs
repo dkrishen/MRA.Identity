@@ -27,7 +27,7 @@ namespace MRA.Identity
             var connectionString = AppConfiguration.GetValue<string>("ConnectionString");
             services.AddDbContext<AuthDbContext>(options =>
             {
-                options.UseSqlite(connectionString);
+                options.UseSqlServer(connectionString);
             });
 
             services.AddIdentity<AppUser, IdentityRole>(config =>

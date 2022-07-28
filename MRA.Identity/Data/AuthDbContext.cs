@@ -1,14 +1,25 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MRA.Identity.Models;
 
 namespace MRA.Identity.Data
 {
     public class AuthDbContext : IdentityDbContext<AppUser>
     {
-        public AuthDbContext(DbContextOptions<AuthDbContext> options)
-            : base(options) { }
+        public AuthDbContext(DbContextOptions<AuthDbContext> options, IConfiguration configuration)
+            : base(options) { Configuration = configuration; }
+
+        public IConfiguration Configuration { get; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(Configuration["ConnectionString"]);
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
